@@ -21,7 +21,7 @@ public class MessageActionLocator {
   private MessageAction messageAction;
 
   public void action(String message) {
-    log.info("Handle {}" + message);
+    log.info("Handle {}\n\n\n", message);
     actions.stream()
         .filter(a -> Arrays
             .stream(AopUtils.getTargetClass(a).getAnnotationsByType(ActionType.class))

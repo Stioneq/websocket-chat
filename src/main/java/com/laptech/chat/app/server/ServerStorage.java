@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
@@ -62,5 +63,12 @@ public class ServerStorage {
 
     users.remove(users.entrySet().stream().filter(a -> session.equals(a.getValue())).findFirst()
         .orElseThrow(() -> new RuntimeException("Session wasn't stored")).getKey());
+  }
+
+  /**
+   * @return stream of users in the server
+   */
+  public Stream<String> getUsers() {
+    return users.keySet().stream();
   }
 }

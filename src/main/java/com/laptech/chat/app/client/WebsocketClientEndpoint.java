@@ -33,14 +33,12 @@ public class WebsocketClientEndpoint {
   public void open(Session session) {
     userSession = session;
     log.info("Connection opened");
-    log.info("Try to join");
     sendMessage(
         ChatMessage.newBuilder().setSender(userInfo.getId()).setType(MessageType.JOIN).build());
   }
 
   @OnMessage
   public void handleMessage(byte[] b, boolean last) {
-    System.out.println("Handle");
     this.buffer = ByteBuffer.allocate(512);
     this.buffer.put(b);
     if (last) {
@@ -56,7 +54,7 @@ public class WebsocketClientEndpoint {
 
   @OnClose
   public void close(Session userSession, CloseReason reason) {
-    System.out.println("closing websocket");
+    log.info("Closing websocket");
     this.userSession = null;
   }
 
@@ -84,6 +82,11 @@ public class WebsocketClientEndpoint {
     sendMessage(ChatMessage.newBuilder().setSender(userInfo.getId()).setReceiver(receiverId)
         .setType(MessageType.SEND)
         .setContent(text).build());
+  }
+
+  public void sendGetUsersMessage() {
+    sendMessage(ChatMessage.newBuilder().setSender(userInfo.getId())
+        .setType(MessageType.GET_USERS).build());
   }
 
   public interface MessageHandler {

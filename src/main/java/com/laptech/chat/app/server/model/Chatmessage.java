@@ -172,6 +172,10 @@ public final class Chatmessage {
        * <code>LOGOUT = 2;</code>
        */
       LOGOUT(2),
+      /**
+       * <code>GET_USERS = 3;</code>
+       */
+      GET_USERS(3),
       UNRECOGNIZED(-1),
       ;
 
@@ -187,6 +191,10 @@ public final class Chatmessage {
        * <code>LOGOUT = 2;</code>
        */
       public static final int LOGOUT_VALUE = 2;
+      /**
+       * <code>GET_USERS = 3;</code>
+       */
+      public static final int GET_USERS_VALUE = 3;
 
 
       public final int getNumber() {
@@ -210,6 +218,7 @@ public final class Chatmessage {
           case 0: return JOIN;
           case 1: return SEND;
           case 2: return LOGOUT;
+          case 3: return GET_USERS;
           default: return null;
         }
       }
@@ -1027,12 +1036,12 @@ public final class Chatmessage {
   static {
     java.lang.String[] descriptorData = {
       "\n\021chatmessage.proto\022!com.laptech.chat.ap" +
-      "p.server.model\"\271\001\n\013ChatMessage\022\017\n\007conten" +
+      "p.server.model\"\310\001\n\013ChatMessage\022\017\n\007conten" +
       "t\030\001 \001(\t\022\016\n\006sender\030\002 \001(\t\022\020\n\010receiver\030\003 \001(" +
       "\t\022H\n\004type\030\004 \001(\0162:.com.laptech.chat.app.s" +
-      "erver.model.ChatMessage.MessageType\"-\n\013M" +
+      "erver.model.ChatMessage.MessageType\"<\n\013M" +
       "essageType\022\010\n\004JOIN\020\000\022\010\n\004SEND\020\001\022\n\n\006LOGOUT" +
-      "\020\002b\006proto3"
+      "\020\002\022\r\n\tGET_USERS\020\003b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

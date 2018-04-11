@@ -6,10 +6,13 @@ import java.net.URISyntaxException;
 import java.util.Scanner;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
+@PropertySource("classpath:client.yml")
 public class SimpleWSClient {
 
   @Autowired
@@ -17,13 +20,15 @@ public class SimpleWSClient {
 
   @Autowired
   private WebsocketClientEndpoint websocketClientEndpoint;
+  @Value("${websockets.server.url}")
+  private String url;
 
   @PostConstruct
   public void init() throws URISyntaxException {
 
-
-    websocketClientEndpoint.connect(new URI("ws://localhost:8080/ws"));
-    websocketClientEndpoint.addMessageHandler(x -> System.out.println(x));
+    url = "ws://localhost:8080/ws";
+    websocketClientEndpoint.connect(new URI(url));
+    websocketClientEndpoint.addMessageHandler(System.out::println);
     handleInput();
   }
 
@@ -44,7 +49,6 @@ public class SimpleWSClient {
           break;
         }
         messageActionLocator.action(message);
-        websocketClientEndpoint.sendText(message);
 
       } while (true);
     }

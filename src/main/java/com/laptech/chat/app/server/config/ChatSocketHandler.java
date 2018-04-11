@@ -28,6 +28,10 @@ public class ChatSocketHandler extends TextWebSocketHandler {
   @Qualifier("sendMessageProcessor")
   private ChatMessageProcessor sendMessageProcessor;
 
+  @Autowired
+  @Qualifier("getUsersMessageProcessor")
+  private ChatMessageProcessor getUsersMessageProcessor;
+
   @Override
   protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
     try {
@@ -40,6 +44,9 @@ public class ChatSocketHandler extends TextWebSocketHandler {
           break;
         case SEND:
           sendMessageProcessor.process(session, chatMessage);
+          break;
+        case GET_USERS:
+          getUsersMessageProcessor.process(session, chatMessage);
           break;
         default:
       }
