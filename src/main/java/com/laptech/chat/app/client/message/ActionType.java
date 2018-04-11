@@ -11,4 +11,5 @@ import java.lang.annotation.Target;
 public @interface ActionType {
 
   String value();
+  String description() default "";
 }

@@ -16,9 +16,11 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @ClientEndpoint
 @Slf4j
+@Component
 public class WebsocketClientEndpoint {
 
   private UserInfo userInfo = new UserInfo();
@@ -26,15 +28,6 @@ public class WebsocketClientEndpoint {
   private MessageHandler messageHandler;
   private ByteBuffer buffer = ByteBuffer.allocate(512);
 
-  public WebsocketClientEndpoint(URI uri) {
-
-    WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-    try {
-      container.connectToServer(this, uri);
-    } catch (DeploymentException | IOException e) {
-      log.error("Cannot connected to websocket endpoint");
-    }
-  }
 
   @OnOpen
   public void open(Session session) {
@@ -72,12 +65,24 @@ public class WebsocketClientEndpoint {
     this.messageHandler = handler;
   }
 
-  private void sendMessage(ChatMessage message) {
-    userSession.getAsyncRemote().sendBinary(ByteBuffer.wrap(message.toByteArray()));
-  }
 
   public void sendText(String text) {
     sendMessage(ChatMessage.newBuilder().setSender(userInfo.getId()).setType(MessageType.SEND)
+        .setContent(text).build());
+  }
+
+  public void connect(URI uri) {
+    WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+    try {
+      container.connectToServer(this, uri);
+    } catch (DeploymentException | IOException e) {
+      log.error("Cannot connected to websocket endpoint");
+    }
+  }
+
+  public void sendPrivateText(String text, String receiverId) {
+    sendMessage(ChatMessage.newBuilder().setSender(userInfo.getId()).setReceiver(receiverId)
+        .setType(MessageType.SEND)
         .setContent(text).build());
   }
 
@@ -85,4 +90,9 @@ public class WebsocketClientEndpoint {
 
     void handle(ChatMessage msg);
   }
+
+  private void sendMessage(ChatMessage message) {
+    userSession.getAsyncRemote().sendBinary(ByteBuffer.wrap(message.toByteArray()));
+  }
+
 }

@@ -57,4 +57,10 @@ public class ServerStorage {
     return !chatMessage.getSender().equals(e.getKey()) && (chatMessage.getReceiver().isEmpty()
         || chatMessage.getReceiver().equals(e.getKey()));
   }
+
+  public void remove(WebSocketSession session) {
+
+    users.remove(users.entrySet().stream().filter(a -> session.equals(a.getValue())).findFirst()
+        .orElseThrow(() -> new RuntimeException("Session wasn't stored")).getKey());
+  }
 }

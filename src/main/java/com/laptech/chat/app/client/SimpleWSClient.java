@@ -15,14 +15,14 @@ public class SimpleWSClient {
   @Autowired
   private MessageActionLocator messageActionLocator;
 
+  @Autowired
   private WebsocketClientEndpoint websocketClientEndpoint;
 
   @PostConstruct
   public void init() throws URISyntaxException {
 
 
-    websocketClientEndpoint = new WebsocketClientEndpoint(
-        new URI("ws://localhost:8080/ws"));
+    websocketClientEndpoint.connect(new URI("ws://localhost:8080/ws"));
     websocketClientEndpoint.addMessageHandler(x -> System.out.println(x));
     handleInput();
   }

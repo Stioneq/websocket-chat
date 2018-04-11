@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,13 +14,18 @@ import org.springframework.stereotype.Component;
 public class MessageActionLocator {
 
   @Autowired
-  List<MessageAction> actions;
+  private List<MessageAction> actions;
+
+  @Autowired
+  @Qualifier("defaultMessageAction")
+  private MessageAction messageAction;
 
   public void action(String message) {
+    log.info("Handle {}" + message);
     actions.stream()
         .filter(a -> Arrays
-        .stream(AopUtils.getTargetClass(a).getAnnotationsByType(ActionType.class))
-        .anyMatch(type -> message.startsWith(type.value()))).findAny()
-        .orElse(s -> log.error("No processors found for {}", message)).action(message);
+            .stream(AopUtils.getTargetClass(a).getAnnotationsByType(ActionType.class))
+            .anyMatch(type -> message.split(" ")[0].equals(type.value()))).findAny()
+        .orElse(messageAction).action(message);
   }
 }

@@ -1,6 +1,7 @@
 package com.laptech.chat.app.server.config;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.laptech.chat.app.server.ServerStorage;
 import com.laptech.chat.app.server.model.Chatmessage.ChatMessage;
 import com.laptech.chat.app.server.processor.ChatMessageProcessor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 @Component
 @Slf4j
 public class ChatSocketHandler extends TextWebSocketHandler {
+
+  @Autowired
+  ServerStorage serverStorage;
 
   @Autowired
   @Qualifier("joinMessageProcessor")
@@ -41,5 +46,11 @@ public class ChatSocketHandler extends TextWebSocketHandler {
     } catch (InvalidProtocolBufferException e) {
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    log.info("User disconnected reason={}", status);
+    serverStorage.remove(session);
   }
 }
