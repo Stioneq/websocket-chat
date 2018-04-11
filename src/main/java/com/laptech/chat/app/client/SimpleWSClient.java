@@ -1,24 +1,35 @@
 package com.laptech.chat.app.client;
 
+import com.laptech.chat.app.client.message.MessageActionLocator;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Scanner;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class SimpleWSClient {
 
-  private final WebsocketClientEndpoint websocketClientEndpoint;
+  @Autowired
+  private MessageActionLocator messageActionLocator;
 
-  public SimpleWSClient() throws URISyntaxException {
+  private WebsocketClientEndpoint websocketClientEndpoint;
+
+  @PostConstruct
+  public void init() throws URISyntaxException {
+
+
     websocketClientEndpoint = new WebsocketClientEndpoint(
         new URI("ws://localhost:8080/ws"));
     websocketClientEndpoint.addMessageHandler(x -> System.out.println(x));
-
+    handleInput();
   }
 
   public static void main(String[] args) throws URISyntaxException {
 
-    SimpleWSClient simpleWSClient = new SimpleWSClient();
-    simpleWSClient.handleInput();
+    SpringApplication.run(SimpleWSClient.class);
 
   }
 
@@ -32,6 +43,7 @@ public class SimpleWSClient {
         if("exit".equals(message)){
           break;
         }
+        messageActionLocator.action(message);
         websocketClientEndpoint.sendText(message);
 
       } while (true);

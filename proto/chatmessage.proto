@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.laptech.chat.app.model;
+package com.laptech.chat.app.server.model;
 
 message ChatMessage {
   string content = 1;

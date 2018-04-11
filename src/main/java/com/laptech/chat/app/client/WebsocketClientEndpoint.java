@@ -1,8 +1,8 @@
 package com.laptech.chat.app.client;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.laptech.chat.app.model.Chatmessage.ChatMessage;
-import com.laptech.chat.app.model.Chatmessage.ChatMessage.MessageType;
+import com.laptech.chat.app.server.model.Chatmessage.ChatMessage;
+import com.laptech.chat.app.server.model.Chatmessage.ChatMessage.MessageType;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;

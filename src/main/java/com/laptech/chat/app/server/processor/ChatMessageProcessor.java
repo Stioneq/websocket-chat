@@ -1,7 +1,7 @@
-package com.laptech.chat.app.processor;
+package com.laptech.chat.app.server.processor;
 
-import com.laptech.chat.app.model.Chatmessage;
-import com.laptech.chat.app.model.Chatmessage.ChatMessage;
+import com.laptech.chat.app.server.model.Chatmessage;
+import com.laptech.chat.app.server.model.Chatmessage.ChatMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 /**

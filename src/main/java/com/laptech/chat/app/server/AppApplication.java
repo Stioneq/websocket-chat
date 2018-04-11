@@ -1,4 +1,4 @@
-package com.laptech.chat.app;
+package com.laptech.chat.app.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

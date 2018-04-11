@@ -1,15 +1,13 @@
-package com.laptech.chat.app.config;
+package com.laptech.chat.app.server.config;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.laptech.chat.app.model.Chatmessage.ChatMessage;
-import com.laptech.chat.app.processor.ChatMessageProcessor;
+import com.laptech.chat.app.server.model.Chatmessage.ChatMessage;
+import com.laptech.chat.app.server.processor.ChatMessageProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
