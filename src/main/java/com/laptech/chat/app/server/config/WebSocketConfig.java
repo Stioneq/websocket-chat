@@ -32,7 +32,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
             public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Exception e) {
                 System.out.println("after handshake");
             }
-        });
+        }).setAllowedOrigins("*");
     }
 
 
