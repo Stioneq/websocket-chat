@@ -2,12 +2,12 @@ package com.laptech.chat.app.server;
 
 
 import com.laptech.chat.app.server.model.Chatmessage.ChatMessage;
-import com.laptech.chat.app.server.model.Chatmessage.ChatMessage.MessageType;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -42,8 +42,8 @@ public class ServerStorage {
           try {
             e.getValue().sendMessage(new BinaryMessage(
                 ChatMessage.newBuilder()
-                    .setReceiver(e.getKey())
-                    .setType(MessageType.SEND)
+                    .setReceiver(chatMessage.getReceiver())
+                    .setType(chatMessage.getType())
                     .setContent(chatMessage.getContent())
                     .setSender(chatMessage.getSender())
                     .build()
@@ -55,14 +55,22 @@ public class ServerStorage {
   }
 
   private boolean isValidReceiver(ChatMessage chatMessage, Entry<String, WebSocketSession> e) {
-    return !chatMessage.getSender().equals(e.getKey()) && (chatMessage.getReceiver().isEmpty()
+    return (chatMessage.getReceiver().isEmpty()
         || chatMessage.getReceiver().equals(e.getKey()));
   }
 
-  public void remove(WebSocketSession session) {
+  /**
+   * Remove and return userid
+   * @param session
+   * @return
+   */
+  public String remove(WebSocketSession session) {
 
-    users.remove(users.entrySet().stream().filter(a -> session.equals(a.getValue())).findFirst()
+    Optional<Entry<String, WebSocketSession>> userEntry = users.entrySet().stream()
+        .filter(a -> session.equals(a.getValue())).findFirst();
+    users.remove(userEntry
         .orElseThrow(() -> new RuntimeException("Session wasn't stored")).getKey());
+    return userEntry.get().getKey();
   }
 
   /**

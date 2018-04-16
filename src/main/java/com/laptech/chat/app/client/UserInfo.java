@@ -6,6 +6,6 @@ import lombok.Getter;
 public class UserInfo {
 
   @Getter
-  private String id = java.util.UUID.randomUUID().toString();
+  private String id = java.util.UUID.randomUUID().toString().substring(0,5);
 
 }
