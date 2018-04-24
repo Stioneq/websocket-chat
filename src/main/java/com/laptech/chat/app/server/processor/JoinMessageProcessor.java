@@ -1,8 +1,8 @@
 package com.laptech.chat.app.server.processor;
 
-import com.laptech.chat.app.server.model.Chatmessage.ChatMessage;
 import com.laptech.chat.app.server.ServerStorage;
-import com.laptech.chat.app.server.model.Chatmessage.ChatMessage.MessageType;
+import com.laptech.chat.app.server.model.ChatMessage;
+import com.laptech.chat.app.server.model.ChatMessage.MessageType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,9 +20,11 @@ public class JoinMessageProcessor implements ChatMessageProcessor {
   public void process(WebSocketSession session, ChatMessage message) {
     String senderId = message.getSender();
     serverStorage.add(senderId, session);
-    serverStorage.sendMessage(
-        ChatMessage.newBuilder().setContent(senderId).setType(MessageType.JOIN).setSender(senderId)
-            .build());
+    ChatMessage chatMessage = new ChatMessage();
+    chatMessage.setContent(senderId);
+    chatMessage.setMessageType(MessageType.JOIN);
+    chatMessage.setSender(senderId);
+    serverStorage.sendMessage(chatMessage);
     log.info("User {} joined chat", senderId);
 
   }

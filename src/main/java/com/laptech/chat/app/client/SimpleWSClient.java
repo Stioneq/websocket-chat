@@ -1,7 +1,7 @@
 package com.laptech.chat.app.client;
 
 import com.laptech.chat.app.client.message.MessageActionLocator;
-import java.net.URI;
+import com.laptech.chat.app.client.socket.WebSocket;
 import java.net.URISyntaxException;
 import java.util.Scanner;
 import javax.annotation.PostConstruct;
@@ -19,16 +19,14 @@ public class SimpleWSClient {
   private MessageActionLocator messageActionLocator;
 
   @Autowired
-  private WebsocketClientEndpoint websocketClientEndpoint;
-  @Value("${websockets.server.url}")
+  private WebSocket websocketClient;
+  @Value("${websockets.server.url:ws://localhost:8080/ws}")
   private String url;
 
   @PostConstruct
   public void init() throws URISyntaxException {
 
-    url = "ws://localhost:8080/ws";
-    websocketClientEndpoint.connect(new URI(url));
-    websocketClientEndpoint.addMessageHandler(System.out::println);
+    websocketClient.connect(url);
     handleInput();
   }
 

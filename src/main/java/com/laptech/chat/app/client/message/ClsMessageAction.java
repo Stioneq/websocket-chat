@@ -1,9 +1,8 @@
 package com.laptech.chat.app.client.message;
 
-import com.laptech.chat.app.client.WebsocketClientEndpoint;
+import com.laptech.chat.app.client.socket.WebSocket;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class ClsMessageAction implements MessageAction {
 
   @Autowired
-  private WebsocketClientEndpoint clientEndpoint;
+  private WebSocket clientEndpoint;
 
   @Override
   public void action(String message) {

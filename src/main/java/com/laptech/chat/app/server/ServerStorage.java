@@ -1,7 +1,7 @@
 package com.laptech.chat.app.server;
 
 
-import com.laptech.chat.app.server.model.Chatmessage.ChatMessage;
+import com.laptech.chat.app.server.model.ChatMessage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class ServerStorage {
 
   public void sendMessage(ChatMessage chatMessage) {
 
-    users
+  /*  users
         .entrySet()
         .stream()
         .filter(
@@ -41,17 +41,16 @@ public class ServerStorage {
         .forEach(e -> {
           try {
             e.getValue().sendMessage(new BinaryMessage(
-                ChatMessage.newBuilder()
-                    .setReceiver(chatMessage.getReceiver())
-                    .setType(chatMessage.getType())
-                    .setContent(chatMessage.getContent())
-                    .setSender(chatMessage.getSender())
-                    .build()
-                    .toByteArray()));
+                ChatMessage.builder()
+                    .receiver(chatMessage.getReceiver())
+                    .messageType(chatMessage.getMessageType())
+                    .content(chatMessage.getContent())
+                    .sender(chatMessage.getSender())
+                    .build());
           } catch (IOException e1) {
             log.error("Cannot send msg to {}", e.getKey());
           }
-        });
+        });*/
   }
 
   private boolean isValidReceiver(ChatMessage chatMessage, Entry<String, WebSocketSession> e) {

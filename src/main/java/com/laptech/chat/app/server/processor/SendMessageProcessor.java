@@ -1,7 +1,7 @@
 package com.laptech.chat.app.server.processor;
 
-import com.laptech.chat.app.server.model.Chatmessage.ChatMessage;
 import com.laptech.chat.app.server.ServerStorage;
+import com.laptech.chat.app.server.model.ChatMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
