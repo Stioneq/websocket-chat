@@ -20,13 +20,9 @@ public class SimpleWSClient {
 
   @Autowired
   private WebSocket websocketClient;
-  @Value("${websockets.server.url:ws://localhost:8080/ws}")
-  private String url;
 
   @PostConstruct
   public void init() throws URISyntaxException {
-
-    websocketClient.connect(url);
     handleInput();
   }
 

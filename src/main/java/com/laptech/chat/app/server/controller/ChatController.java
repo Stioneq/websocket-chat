@@ -2,14 +2,13 @@ package com.laptech.chat.app.server.controller;
 
 import com.laptech.chat.app.server.ServerStorage;
 import com.laptech.chat.app.server.model.ChatMessage;
-import com.laptech.chat.app.server.model.ChatMessage.MessageType;
-import com.laptech.chat.app.server.processor.ChatMessageProcessor;
+import java.security.Principal;
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
@@ -18,37 +17,27 @@ import org.springframework.stereotype.Controller;
 public class ChatController {
 
 	@Autowired
-	ServerStorage serverStorage;
+	private ServerStorage serverStorage;
 
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
 
 	@SubscribeMapping("/chat/users")
-	public String users(){
-		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setMessageType(MessageType.GET_USERS);
-		//chatMessage.setContent(serverStorage.getUsers().collect(Collectors.joining(",")));
-		chatMessage.setContent("DASDASDASDSADASDASDASDAS");
-		return "dasdasdad";
+	public List<String> users(){
+		return serverStorage.getUsers().collect(Collectors.toList());
 	}
 
-	@MessageMapping("/chat/message")
-	@SendTo("/chat/message")
-	public ChatMessage onMessage(ChatMessage message) {
+	@MessageMapping("/chat/message/public")
+	public ChatMessage onMessage(ChatMessage message, Principal principal) {
 		log.info(message.toString());
-		switch (message.getMessageType()) {
-			case JOIN:
-				//joinMessageProcessor.process(session, message);
-				break;
-			case SEND:
-				//sendMessageProcessor.process(session, message);
-				break;
-			case GET_USERS:
-				//getUsersMessageProcessor.process(session, message);
-				break;
-			default:
-		}
-
+		message.setSender(principal.getName());
 		return message;
 	}
 
+	@MessageMapping("/chat/message/private")
+	public void onPrivateMessage(ChatMessage message, Principal principal){
+		message.setSender(principal.getName());
+		messagingTemplate.convertAndSend("/topic/chat/message/private/"+message.getReceiver(), message);
+	}
 
 }

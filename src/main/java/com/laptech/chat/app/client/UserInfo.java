@@ -1,11 +1,16 @@
 package com.laptech.chat.app.client;
 
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 
+@Data
+@Component
 public class UserInfo {
 
-  @Getter
-  private String id = java.util.UUID.randomUUID().toString().substring(0,5);
+  private String token;
+  private String name;
 
 }
