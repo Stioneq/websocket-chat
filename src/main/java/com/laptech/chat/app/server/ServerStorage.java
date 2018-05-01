@@ -29,7 +29,7 @@ public class ServerStorage {
   public void add(String sessionId, String name) {
     Objects.requireNonNull(sessionId);
     if (users.containsKey(sessionId)) {
-      throw new RuntimeException("User already existed");
+      throw new RuntimeException("UserEntity already existed");
     }
     users.put(sessionId, name);
   }

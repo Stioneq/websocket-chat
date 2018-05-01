@@ -1,0 +1,8 @@
+logging.level.com.laptech.chat: INFO
+jwt:
+  secret: B3adRA6qjCfKbj9Px6bAQP9b
+  exp-time: 999999
+  token-prefix: Bearer
+  auth-header: Authorization
+  sign-up-url: /user/sign-up
+  get-param-key: access_token

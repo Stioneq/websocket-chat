@@ -1,8 +1,9 @@
 package com.laptech.chat.app.server.service;
 
-import com.laptech.chat.app.server.model.ChatUserPrincipal;
 import com.laptech.chat.app.server.repository.UserRepository;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     return userRepository
         .findByUsername(username)
-        .map(ChatUserPrincipal::new)
+        .map(u -> new User(u.getUsername(), u.getPassword(), new ArrayList<>()))
         .orElseThrow(() -> new UsernameNotFoundException(username));
   }
 }

@@ -3,19 +3,12 @@ package com.laptech.chat.app.client.socket;
 import com.laptech.chat.app.client.UserInfo;
 import com.laptech.chat.app.server.model.ChatMessage;
 import com.laptech.chat.app.server.model.ChatMessage.MessageType;
-import com.laptech.chat.app.server.model.User;
 import java.lang.reflect.Type;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import javax.websocket.CloseReason;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -49,14 +42,14 @@ public class WebSocketImpl implements WebSocket {
     WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
     stompClient.setMessageConverter(new MappingJackson2MessageConverter());
     WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
-    if(StringUtils.isEmpty(userInfo.getToken())){
+    if (StringUtils.isEmpty(userInfo.getToken())) {
       log.error("You must login first");
-    }else {
-      headers.set("Authorization", userInfo.getToken());
+    } else {
       stompSession = stompClient
-          .connect(url, new WebSocketHttpHeaders(headers), new CustomStompSessionHandler()).get();
+          .connect(url + "?access_token=" + userInfo.getToken(), new CustomStompSessionHandler())
+          .get();
       stompSession.subscribe("/topic/chat/message/public", messageHandler);
-      stompSession.subscribe("/topic/chat/message/private/"+userInfo.getName(), messageHandler);
+      stompSession.subscribe("/topic/chat/message/private/" + userInfo.getName(), messageHandler);
 
     }
   }
