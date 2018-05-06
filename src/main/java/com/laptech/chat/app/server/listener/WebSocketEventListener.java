@@ -11,7 +11,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
@@ -38,8 +37,8 @@ public class WebSocketEventListener {
   private void sendJoinMessage(String name) {
     ChatMessage msg = new ChatMessage();
     msg.setContent(name);
-    msg.setMessageType(MessageType.JOIN);
-    sendingOperations.convertAndSend("/topic/chat/message/public", msg);
+    msg.setType(MessageType.JOIN);
+    sendingOperations.convertAndSend("/topic/chat/events/public", msg);
   }
 
   @EventListener
@@ -55,7 +54,7 @@ public class WebSocketEventListener {
   private void sendLogoutMessage(String name) {
     ChatMessage msg = new ChatMessage();
     msg.setContent(name);
-    msg.setMessageType(MessageType.LOGOUT);
-    sendingOperations.convertAndSend("/topic/chat/message/public", msg);
+    msg.setType(MessageType.LOGOUT);
+    sendingOperations.convertAndSend("/topic/chat/events/public", msg);
   }
 }

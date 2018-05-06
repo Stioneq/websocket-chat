@@ -1,4 +1,4 @@
-package com.laptech.chat.app.server.controller;
+package com.laptech.chat.app.server.controller.rest;
 
 import com.laptech.chat.app.server.model.UserEntity;
 import com.laptech.chat.app.server.repository.UserRepository;

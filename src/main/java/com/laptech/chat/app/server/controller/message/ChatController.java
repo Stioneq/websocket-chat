@@ -1,7 +1,9 @@
-package com.laptech.chat.app.server.controller;
+package com.laptech.chat.app.server.controller.message;
 
 import com.laptech.chat.app.server.ServerStorage;
 import com.laptech.chat.app.server.model.ChatMessage;
+import com.laptech.chat.app.server.repository.MessageRepository;
+import com.laptech.chat.app.server.service.MessageService;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +22,8 @@ public class ChatController {
 	private ServerStorage serverStorage;
 
 	@Autowired
+	private MessageService messageService;
+	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
 
 	@SubscribeMapping("/chat/users")
@@ -31,12 +35,14 @@ public class ChatController {
 	public ChatMessage onMessage(ChatMessage message, Principal principal) {
 		log.info(message.toString());
 		message.setSender(principal.getName());
+		messageService.saveMessage(message);
 		return message;
 	}
-
+//24.09 19.25   5.10.18 10.45
 	@MessageMapping("/chat/message/private")
 	public void onPrivateMessage(ChatMessage message, Principal principal){
 		message.setSender(principal.getName());
+		messageService.saveMessage(message);
 		messagingTemplate.convertAndSend("/topic/chat/message/private/"+message.getReceiver(), message);
 	}
 

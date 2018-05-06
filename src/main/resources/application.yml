@@ -6,3 +6,7 @@ jwt:
   auth-header: Authorization
   sign-up-url: /user/sign-up
   get-param-key: access_token
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://m001-student:qsefthuko@cluster0-fdsjy.mongodb.net/chat

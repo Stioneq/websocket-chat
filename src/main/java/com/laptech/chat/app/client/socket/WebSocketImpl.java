@@ -70,7 +70,7 @@ public class WebSocketImpl implements WebSocket {
 
   public void sendText(String text) {
     ChatMessage chatMessage = new ChatMessage();
-    chatMessage.setMessageType(MessageType.SEND);
+    chatMessage.setType(MessageType.SEND);
     chatMessage.setContent(text);
     sendMessage(chatMessage);
 
@@ -79,7 +79,7 @@ public class WebSocketImpl implements WebSocket {
 
   public void sendPrivateText(String text, String receiverId) {
     ChatMessage chatMessage = new ChatMessage();
-    chatMessage.setMessageType(MessageType.SEND);
+    chatMessage.setType(MessageType.SEND);
     chatMessage.setContent(text);
     chatMessage.setReceiver(receiverId);
     stompSession.send("/app/chat/message/private", chatMessage);

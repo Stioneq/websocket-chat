@@ -22,18 +22,6 @@ public class AppApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		userRepository.deleteAll();
-		UserEntity userEntity = new UserEntity();
-		userEntity.setEmail("stioneq@gmail.com");
-		userEntity.setUsername("admin");
-		userEntity.setPassword(passwordEncoder.encode("admin"));
 
-    UserEntity userEntity2 = new UserEntity();
-    userEntity2.setEmail("stioneq@gmail.com");
-    userEntity2.setUsername("userEntity");
-    userEntity2.setPassword(passwordEncoder.encode("userEntity"));
-
-    userRepository.insert(userEntity);
-		userRepository.insert(userEntity2);
 	}
 }

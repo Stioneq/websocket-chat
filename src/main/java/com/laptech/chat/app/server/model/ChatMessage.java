@@ -3,19 +3,31 @@
 
 package com.laptech.chat.app.server.model;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.LocalDateTime;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "messages")
 @Data
 public class ChatMessage {
 
-	String content;
-	String receiver;
-	String sender;
-	MessageType messageType;
+  @JsonIgnore
+  @Id
+  String id;
+  String content;
+  String receiver;
+  String sender;
+  @CreatedDate
+  LocalDateTime date;
+  MessageType type;
 
-	public enum MessageType {
-		JOIN, SEND, LOGOUT, GET_USERS;
-	}
+  public enum MessageType {
+    WHISPER,
+    SYSTEM,
+    JOIN, LOGOUT, SEND, GET_USERS
+
+  }
 }
